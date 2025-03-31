@@ -1,0 +1,99 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply antialiased;
+  }
+
+  body {
+    @apply m-0 p-0 w-full h-full font-sans text-gray-900 bg-white;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold text-gray-900;
+  }
+
+  a {
+    @apply no-underline transition-colors duration-200;
+  }
+}
+
+@layer components {
+  /* Layout Styles */
+  .container {
+    @apply max-w-7xl mx-auto px-8;
+  }
+
+  .container-sm {
+    @apply max-w-3xl mx-auto px-8;
+  }
+
+  /* Header & Navigation */
+  .nav-link {
+    @apply text-gray-800 font-medium hover:text-gray-600 transition-colors duration-200;
+  }
+
+  /* Section Styles */
+  .section {
+    @apply py-20 px-8;
+  }
+
+  .section-title {
+    @apply text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900;
+  }
+
+  .section-subtitle {
+    @apply text-xl text-gray-600 text-center mb-8 max-w-2xl mx-auto;
+  }
+
+  /* Button Styles */
+  .btn {
+    @apply px-8 py-4 text-lg rounded-lg transition-all duration-200 font-medium;
+  }
+
+  .btn-primary {
+    @apply bg-gray-900 text-white hover:bg-gray-800 hover:shadow-lg;
+  }
+
+  .btn-secondary {
+    @apply bg-white text-gray-900 border-2 border-gray-900 hover:bg-gray-900 hover:text-white;
+  }
+
+  /* Form Styles */
+  .form-input {
+    @apply w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all duration-200;
+  }
+
+  .form-textarea {
+    @apply form-input h-32;
+  }
+
+  /* Card Styles */
+  .card {
+    @apply p-8 bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200;
+  }
+
+  /* Grid Layouts */
+  .grid-2 {
+    @apply grid md:grid-cols-2 gap-8;
+  }
+
+  .grid-3 {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4;
+  }
+
+  .grid-4 {
+    @apply grid md:grid-cols-2 lg:grid-cols-4 gap-8;
+  }
+
+  /* Image Styles */
+  .image-container {
+    @apply relative overflow-hidden rounded-lg;
+  }
+
+  .image-container img {
+    @apply w-full h-full object-cover transition-transform duration-300 hover:scale-105;
+  }
+}

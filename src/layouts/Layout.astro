@@ -1,3 +1,13 @@
+---
+import Header from '../components/Landing/Header.astro';
+
+interface Props {
+	title?: string;
+}
+
+const { title = "Leni Photography" } = Astro.props;
+---
+
 <!doctype html>
 <html lang="en">
 	<head>
@@ -5,10 +15,14 @@
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<link rel="stylesheet" href="/src/styles/main.css" />
+		<title>{title}</title>
 	</head>
-	<body>
-		<slot />
+	<body class="m-0 p-0 w-full h-full font-sans">
+		<Header title={title} />
+		<main class="pt-16">
+			<slot />
+		</main>
 	</body>
 </html>
 
@@ -16,7 +30,62 @@
 	html,
 	body {
 		margin: 0;
+		padding: 0;
 		width: 100%;
 		height: 100%;
+		font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+	}
+
+	.main-header {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		background-color: rgba(255, 255, 255, 0.95);
+		padding: 1rem 2rem;
+		box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+		z-index: 1000;
+	}
+
+	nav {
+		max-width: 1200px;
+		margin: 0 auto;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.logo {
+		font-size: 1.5rem;
+		font-weight: bold;
+	}
+
+	.nav-links {
+		display: flex;
+		gap: 2rem;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	.nav-links a {
+		text-decoration: none;
+		color: #333;
+		font-weight: 500;
+		transition: color 0.3s;
+	}
+
+	.nav-links a:hover {
+		color: #666;
+	}
+
+	main {
+		padding-top: 4rem;
+	}
+
+	@media (max-width: 768px) {
+		.nav-links {
+			gap: 1rem;
+		}
 	}
 </style>

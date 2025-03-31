@@ -1,0 +1,34 @@
+---
+const services = [
+    {
+        title: "Events",
+        description: "Capture the energy and excitement of your special occasions."
+    },
+    {
+        title: "Couples",
+        description: "Beautiful portraits celebrating your love story."
+    },
+    {
+        title: "Fitness",
+        description: "Dynamic photography showcasing your fitness journey."
+    },
+    {
+        title: "Wedding",
+        description: "Timeless memories of your perfect day."
+    }
+];
+---
+
+<section class="section bg-gray-50">
+    <div class="container">
+        <h2 class="section-title">Services</h2>
+        <div class="grid-4">
+            {services.map(service => (
+                <div class="card">
+                    <h3 class="text-xl font-semibold mb-4">{service.title}</h3>
+                    <p class="text-gray-600">{service.description}</p>
+                </div>
+            ))}
+        </div>
+    </div>
+</section> 
