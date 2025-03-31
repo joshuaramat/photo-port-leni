@@ -1,12 +1,23 @@
-<section class="section bg-white">
+<section id="about" class="section bg-gray-50">
     <div class="container">
         <h2 class="section-title">About Me</h2>
-        <div class="grid-2">
-            <div class="prose max-w-none">
-                <p>Your photographer's story and expertise will go here.</p>
+        <p class="section-subtitle">My journey in photography</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div class="relative aspect-square rounded-lg overflow-hidden" client:load>
+                <img 
+                    src="https://picsum.photos/600/600?random=7" 
+                    alt="Photographer profile" 
+                    class="w-full h-full object-cover"
+                />
             </div>
-            <div class="bg-gray-100 rounded-lg aspect-square">
-                <!-- Placeholder for photographer's image -->
+            <div>
+                <p class="text-lg text-gray-700 mb-6">
+                    With over 10 years of experience in photography, I've dedicated my life to capturing the beauty of moments that matter. My passion lies in creating timeless memories that tell your unique story.
+                </p>
+                <p class="text-lg text-gray-700 mb-8">
+                    I specialize in portrait, wedding, and event photography, bringing a creative and professional approach to every shoot. My goal is to make you feel comfortable and natural in front of the camera, ensuring authentic and beautiful results.
+                </p>
+                <a href="#contact" class="btn btn-primary" client:load>Get in Touch</a>
             </div>
         </div>
     </div>

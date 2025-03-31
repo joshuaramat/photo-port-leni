@@ -1,14 +1,97 @@
-<section class="h-screen flex items-center justify-center text-center bg-gray-50 relative">
-    <div class="container-sm">
-        <h1 class="text-4xl md:text-6xl font-bold mb-6">Capturing Your Special Moments</h1>
-        <p class="section-subtitle">Professional photography services for your most precious memories</p>
+---
+// Add client directive for interactive elements
+---
+
+<section class="h-screen flex items-center justify-center text-center relative">
+    <div class="absolute inset-0 z-0">
+        <img 
+            id="heroImage"
+            src="https://picsum.photos/1920/1080" 
+            alt="Hero background" 
+            class="w-full h-full object-cover"
+            aria-hidden="true"
+            client:load
+        />
+        <div class="absolute inset-0 bg-gradient-to-b from-black/10 via-black/5 to-black/10"></div>
+    </div>
+    <div class="container-sm relative z-10 text-center">
+        <h1 id="heroTitle" class="text-4xl md:text-6xl font-bold mb-6">Capturing Your Special Moments</h1>
+        <p id="heroSubtitle" class="section-subtitle">Professional photography services for your most precious memories</p>
         <div class="flex gap-4 justify-center">
-            <button class="btn btn-primary">
+            <a href="#contact" class="btn btn-primary" client:load>
                 Book a Session
-            </button>
-            <button class="btn btn-secondary">
+            </a>
+            <a href="#gallery" class="btn btn-secondary" client:load>
                 View Portfolio
-            </button>
+            </a>
         </div>
     </div>
-</section> 
+</section>
+
+<script>
+    function getImageBrightness(imageElement) {
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        
+        // Set canvas size to match image
+        canvas.width = imageElement.width;
+        canvas.height = imageElement.height;
+        
+        // Draw image on canvas
+        context.drawImage(imageElement, 0, 0);
+        
+        // Get image data
+        const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+        const data = imageData.data;
+        
+        // Calculate average brightness
+        let totalBrightness = 0;
+        const sampleSize = 1000; // Sample every nth pixel for performance
+        
+        for (let i = 0; i < data.length; i += sampleSize * 4) {
+            const r = data[i];
+            const g = data[i + 1];
+            const b = data[i + 2];
+            // Calculate relative luminance
+            totalBrightness += (0.299 * r + 0.587 * g + 0.114 * b);
+        }
+        
+        const averageBrightness = totalBrightness / (data.length / (sampleSize * 4));
+        return averageBrightness;
+    }
+
+    function updateTextColor() {
+        const image = document.getElementById('heroImage');
+        const title = document.getElementById('heroTitle');
+        const subtitle = document.getElementById('heroSubtitle');
+        
+        if (image && title && subtitle) {
+            const brightness = getImageBrightness(image);
+            const isDark = brightness < 128; // Threshold for dark background
+            
+            // Update text colors based on brightness
+            title.classList.toggle('text-white', isDark);
+            title.classList.toggle('text-gray-900', !isDark);
+            subtitle.classList.toggle('text-white', isDark);
+            subtitle.classList.toggle('text-gray-900', !isDark);
+        }
+    }
+
+    // Run on page load and when image loads
+    document.addEventListener('DOMContentLoaded', updateTextColor);
+    const image = document.getElementById('heroImage');
+    if (image) {
+        image.addEventListener('load', updateTextColor);
+    }
+</script>
+
+<style>
+    .text-shadow-lg {
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5),
+                     0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+    .text-shadow-md {
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5),
+                     0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+</style> 

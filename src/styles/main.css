@@ -4,96 +4,118 @@
 
 @layer base {
   html {
-    @apply antialiased;
+    @apply scroll-smooth;
   }
 
   body {
-    @apply m-0 p-0 w-full h-full font-sans text-gray-900 bg-white;
+    @apply m-0 p-0 w-full h-full text-gray-700 bg-white;
+    font-family: 'Nunito', sans-serif;
   }
 
   h1, h2, h3, h4, h5, h6 {
     @apply font-bold text-gray-900;
+    font-family: 'Cormorant Garamond', serif;
   }
 
-  a {
-    @apply no-underline transition-colors duration-200;
+  /* Only apply default link styles to links that aren't buttons, nav links, or footer links */
+  a:not(.btn):not(.nav-link):not(header a):not(footer a) {
+    @apply text-primary hover:text-primary-dark transition-colors duration-200;
+  }
+
+  :root {
+    --color-primary: #9C8B7E;
+    --color-primary-dark: rgb(138 122 110);
+    --color-secondary: #9C8B7E;
+    --color-secondary-dark: rgb(138 122 110);
   }
 }
 
 @layer components {
-  /* Layout Styles */
+  /* Layout Components */
   .container {
-    @apply max-w-7xl mx-auto px-8;
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
   }
 
   .container-sm {
-    @apply max-w-3xl mx-auto px-8;
+    @apply max-w-3xl mx-auto px-4 sm:px-6 lg:px-8;
   }
 
-  /* Header & Navigation */
-  .nav-link {
-    @apply text-gray-800 font-medium hover:text-gray-600 transition-colors duration-200;
-  }
-
-  /* Section Styles */
   .section {
-    @apply py-20 px-8;
+    @apply py-16 md:py-24;
   }
 
   .section-title {
-    @apply text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900;
+    @apply text-3xl md:text-4xl font-bold text-gray-900 mb-4 text-center;
   }
 
   .section-subtitle {
-    @apply text-xl text-gray-600 text-center mb-8 max-w-2xl mx-auto;
+    @apply text-lg text-gray-600 mb-12 text-center max-w-2xl mx-auto;
   }
 
-  /* Button Styles */
+  /* Navigation */
+  .nav-link {
+    @apply text-gray-600 hover:text-[#9C8B7E] transition-colors duration-200 no-underline;
+  }
+
+  /* Buttons */
   .btn {
-    @apply px-8 py-4 text-lg rounded-lg transition-all duration-200 font-medium;
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm transition-all duration-200 hover:scale-105 hover:shadow-md active:scale-95;
+  }
+
+  .btn::after {
+    content: '';
+    @apply w-0 h-4 transition-all duration-200 opacity-0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M9 5l7 7-7 7'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+  }
+
+  .btn:hover::after {
+    @apply w-4 opacity-100;
   }
 
   .btn-primary {
-    @apply bg-gray-900 text-white hover:bg-gray-800 hover:shadow-lg;
+    @apply bg-[#9C8B7E] text-white hover:bg-white hover:text-[#9C8B7E] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#9C8B7E];
   }
 
   .btn-secondary {
-    @apply bg-white text-gray-900 border-2 border-gray-900 hover:bg-gray-900 hover:text-white;
+    @apply bg-white text-[#9C8B7E] border-[#9C8B7E] hover:bg-[#9C8B7E] hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#9C8B7E];
   }
 
-  /* Form Styles */
+  /* Forms */
   .form-input {
-    @apply w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all duration-200;
+    @apply w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#9C8B7E] focus:border-transparent;
   }
 
   .form-textarea {
     @apply form-input h-32;
   }
 
-  /* Card Styles */
+  /* Cards */
   .card {
-    @apply p-8 bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200;
+    @apply bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg;
   }
 
   /* Grid Layouts */
   .grid-2 {
-    @apply grid md:grid-cols-2 gap-8;
+    @apply grid grid-cols-1 md:grid-cols-2 gap-8;
   }
 
   .grid-3 {
-    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4;
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
   }
 
   .grid-4 {
-    @apply grid md:grid-cols-2 lg:grid-cols-4 gap-8;
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6;
   }
 
-  /* Image Styles */
-  .image-container {
+  /* Image Containers */
+  .img-container {
     @apply relative overflow-hidden rounded-lg;
   }
 
-  .image-container img {
-    @apply w-full h-full object-cover transition-transform duration-300 hover:scale-105;
+  .img-container img {
+    @apply w-full h-full object-cover transition-transform duration-300;
   }
 }
