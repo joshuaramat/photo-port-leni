@@ -2,7 +2,7 @@
 // Add client directive for interactive elements
 ---
 
-<section class="h-screen flex items-center justify-center text-center relative">
+<section class="h-screen flex items-center justify-center text-center relative" role="region" aria-label="Hero section">
     <div class="absolute inset-0 z-0">
         <img 
             id="heroImage"
@@ -12,16 +12,26 @@
             aria-hidden="true"
             client:load
         />
-        <div class="absolute inset-0 bg-gradient-to-b from-black/10 via-black/5 to-black/10"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/60"></div>
     </div>
     <div class="container-sm relative z-10 text-center">
-        <h1 id="heroTitle" class="text-4xl md:text-6xl font-bold mb-6">Capturing Your Special Moments</h1>
-        <p id="heroSubtitle" class="section-subtitle">Professional photography services for your most precious memories</p>
+        <h1 id="heroTitle" class="text-4xl md:text-6xl font-bold mb-6 text-white text-shadow-lg">Capturing Your Special Moments</h1>
+        <p id="heroSubtitle" class="section-subtitle text-white text-shadow-md mb-8">Professional photography services for your most precious memories</p>
         <div class="flex gap-4 justify-center">
-            <a href="#contact" class="btn btn-primary" client:load>
+            <a 
+                href="#contact" 
+                class="btn btn-primary min-h-[44px] min-w-[44px] flex items-center justify-center px-6 py-3" 
+                client:load
+                aria-label="Book a photography session"
+            >
                 Book a Session
             </a>
-            <a href="#gallery" class="btn btn-secondary" client:load>
+            <a 
+                href="#gallery" 
+                class="btn btn-secondary min-h-[44px] min-w-[44px] flex items-center justify-center px-6 py-3" 
+                client:load
+                aria-label="View our photography portfolio"
+            >
                 View Portfolio
             </a>
         </div>
@@ -87,11 +97,38 @@
 
 <style>
     .text-shadow-lg {
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5),
-                     0 4px 8px rgba(0, 0, 0, 0.3);
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8),
+                     0 4px 8px rgba(0, 0, 0, 0.6);
     }
     .text-shadow-md {
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5),
-                     0 2px 4px rgba(0, 0, 0, 0.3);
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8),
+                     0 2px 4px rgba(0, 0, 0, 0.6);
+    }
+
+    .btn {
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        border-radius: 0.375rem;
+    }
+
+    .btn:focus {
+        outline: 2px solid #fff;
+        outline-offset: 2px;
+    }
+
+    .btn:focus:not(:focus-visible) {
+        outline: none;
+    }
+
+    .btn:focus-visible {
+        outline: 2px solid #fff;
+        outline-offset: 2px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .btn {
+            transition: none;
+        }
     }
 </style> 
