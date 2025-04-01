@@ -1,35 +1,17 @@
 # Photo Portfolio Website
 
-A modern, responsive photography portfolio website built with Astro, React, and Tailwind CSS. This project showcases a photographer's work with a focus on accessibility, performance, and user experience.
+A photography portfolio website built with Astro, React, and Tailwind CSS. This project provides a simple, accessible way to showcase photography work online.
 
-## 🚀 Features
+## Features
 
-- **Modern Tech Stack**
-  - Astro for static site generation
-  - React for interactive components
-  - Tailwind CSS for styling
-  - TypeScript for type safety
+- Static site generation with Astro
+- Interactive components with React
+- Responsive design with Tailwind CSS
+- Accessibility testing with Playwright
+- Image optimization and lazy loading
+- Contact form with validation
 
-- **Performance Optimized**
-  - Image optimization with lazy loading
-  - CSS modules for scoped styling
-  - Code splitting and lazy loading
-  - Optimized asset delivery
-
-- **Accessibility First**
-  - WCAG 2.1 compliant
-  - Keyboard navigation
-  - Screen reader friendly
-  - ARIA landmarks
-  - Alt text for all images
-
-- **Interactive Components**
-  - Contact form with validation
-  - Image gallery with hover effects
-  - Responsive navigation
-  - Dynamic content loading
-
-## 📁 Project Structure
+## Project Structure
 
 ```
 photo-port/
@@ -61,7 +43,7 @@ photo-port/
 └── astro.config.mjs      # Astro configuration
 ```
 
-## 🛠️ Setup
+## Setup
 
 1. **Prerequisites**
    - Node.js >=18.17.1
@@ -92,9 +74,9 @@ photo-port/
    npm run preview
    ```
 
-## 🧪 Testing
+## Testing
 
-The project includes comprehensive accessibility testing using Playwright and axe-core:
+The project includes accessibility testing using Playwright and axe-core:
 
 ```bash
 # Run all tests
@@ -107,7 +89,7 @@ npm run test:a11y
 npm run test:ui
 ```
 
-## 🎨 Customization
+## Customization
 
 1. **Images**
    - Place your images in the appropriate folders under `public/images/`
@@ -124,40 +106,21 @@ npm run test:ui
    - Update global styles in `src/styles/global.css`
    - Customize theme colors in `tailwind.config.mjs`
 
-## 📱 Responsive Design
+## Changelog
 
-The website is fully responsive and optimized for:
-- Desktop (1024px and above)
-- Tablet (768px to 1023px)
-- Mobile (below 768px)
+### v1.0.0 (Initial Release)
+- Basic landing page with Hero, About, Services, Gallery, and Contact sections
+- Responsive design for desktop, tablet, and mobile
+- Contact form with basic validation
+- Image optimization and lazy loading
+- Accessibility testing setup
+- Basic SEO optimization
 
-## 🔒 Security
-
-- Form validation and sanitization
-- Secure API endpoints
-- Environment variable protection
-- XSS prevention
-
-## 📈 Performance
-
-- Optimized image loading
-- Code splitting
-- Lazy loading of components
-- Minimal JavaScript footprint
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - [Astro](https://astro.build/) for the static site framework
 - [React](https://reactjs.org/) for the component library
