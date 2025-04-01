@@ -1,6 +1,5 @@
-import React, { useState, useCallback } from 'react';
-import type { FormEvent } from 'react';
-import styles from './ContactForm.module.css';
+import React, { useState } from 'react';
+import { useForm, ValidationError } from '@formspree/react';
 
 interface FormData {
   name: string;
@@ -14,100 +13,85 @@ interface FormErrors {
   message?: string;
 }
 
-const ContactForm: React.FC = () => {
+export default function ContactForm() {
   const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
     message: ''
   });
-
   const [errors, setErrors] = useState<FormErrors>({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [status, setStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+  const [state, handleSubmit] = useForm("mqapdveq");
 
-  const validateField = useCallback((name: keyof FormData, value: string): string => {
-    if (!value.trim()) return 'This field is required';
-
-    switch (name) {
-      case 'name':
-        if (/\d/.test(value)) return 'Numbers are not allowed in the name field';
-        if (value.length < 2) return 'Name must be at least 2 characters long';
-        if (!/^[A-Za-z\s-]+$/.test(value)) return 'Please enter only letters, spaces, and hyphens';
-        break;
-      case 'email':
-        if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value)) {
-          return 'Please enter a valid email address';
-        }
-        break;
-      case 'message':
-        if (value.length < 10) return 'Message must be at least 10 characters long';
-        if (value.length > 500) return 'Message must be less than 500 characters';
-        break;
-    }
-    return '';
-  }, []);
-
-  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-    setErrors(prev => ({ ...prev, [name]: validateField(name as keyof FormData, value) }));
-  }, [validateField]);
-
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    setStatus(null);
-
-    // Validate all fields
-    const newErrors: FormErrors = {};
-    Object.keys(formData).forEach(key => {
-      const error = validateField(key as keyof FormData, formData[key as keyof FormData]);
-      if (error) newErrors[key as keyof FormErrors] = error;
-    });
-
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      return;
-    }
-
-    setIsSubmitting(true);
-
-    try {
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 10000);
-
-      const response = await fetch('https://formspree.io/f/mqapdveq', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-        signal: controller.signal
-      });
-
-      clearTimeout(timeoutId);
-
-      if (response.ok) {
-        setStatus({ type: 'success', message: 'Perfect! I\'ll be in touch within 24 hours to discuss your vision.' });
-        setFormData({ name: '', email: '', message: '' });
-      } else {
-        throw new Error(`Form submission failed: ${response.status}`);
-      }
-    } catch (error) {
-      console.error('Form submission error:', error);
-      setStatus({
-        type: 'error',
-        message: error instanceof Error && error.name === 'AbortError'
-          ? 'Oops! The request timed out. Please try again.'
-          : 'Something went wrong. Please try again or email me directly.'
-      });
-    } finally {
-      setIsSubmitting(false);
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+    // Clear error when user starts typing
+    if (errors[name as keyof FormErrors]) {
+      setErrors(prev => ({
+        ...prev,
+        [name]: ''
+      }));
     }
   };
 
+  const validateForm = (): boolean => {
+    const newErrors: FormErrors = {};
+    
+    if (!formData.name.trim()) {
+      newErrors.name = 'Name is required';
+    }
+    
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email is required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = 'Please enter a valid email address';
+    }
+    
+    if (!formData.message.trim()) {
+      newErrors.message = 'Message is required';
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    
+    if (!validateForm()) {
+      return;
+    }
+
+    try {
+      await handleSubmit(e);
+      // Clear form on success
+      setFormData({
+        name: '',
+        email: '',
+        message: ''
+      });
+    } catch (error) {
+      console.error('Form submission error:', error);
+    }
+  };
+
+  if (state.succeeded) {
+    return (
+      <div className="text-center p-8 bg-white rounded-lg shadow-lg">
+        <h3 className="text-2xl font-bold text-gray-800 mb-4">Thank you!</h3>
+        <p className="text-gray-600">Your message has been sent successfully.</p>
+      </div>
+    );
+  }
+
   return (
-    <form onSubmit={handleSubmit} className={styles.form}>
+    <form onSubmit={onSubmit} className="space-y-6">
       <div>
-        <label htmlFor="name" className={styles.field}>
-          Your Name
+        <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+          Name
         </label>
         <input
           type="text"
@@ -115,19 +99,24 @@ const ContactForm: React.FC = () => {
           name="name"
           value={formData.name}
           onChange={handleChange}
-          className={`${styles.formInput} ${errors.name ? styles.error : ''}`}
-          placeholder="e.g., Sarah Johnson"
-          aria-invalid={!!errors.name}
-          aria-describedby={errors.name ? "name-error" : undefined}
+          className={`mt-1 block w-full px-4 py-2.5 rounded-md border shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm transition-colors duration-200 ${
+            errors.name ? 'border-red-500 bg-red-50' : 'border-gray-300'
+          }`}
+          placeholder="Enter your name"
         />
         {errors.name && (
-          <div id="name-error" className={styles.errorMessage} role="alert">{errors.name}</div>
+          <div className="mt-2 flex items-center text-sm text-red-600">
+            <svg className="h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd"/>
+            </svg>
+            {errors.name}
+          </div>
         )}
       </div>
 
       <div>
-        <label htmlFor="email" className={styles.field}>
-          Your Email
+        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+          Email
         </label>
         <input
           type="email"
@@ -135,61 +124,67 @@ const ContactForm: React.FC = () => {
           name="email"
           value={formData.email}
           onChange={handleChange}
-          className={`${styles.formInput} ${errors.email ? styles.error : ''}`}
-          placeholder="e.g., sarah@example.com"
-          aria-invalid={!!errors.email}
-          aria-describedby={errors.email ? "email-error" : undefined}
+          className={`mt-1 block w-full px-4 py-2.5 rounded-md border shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm transition-colors duration-200 ${
+            errors.email ? 'border-red-500 bg-red-50' : 'border-gray-300'
+          }`}
+          placeholder="Enter your email"
         />
         {errors.email && (
-          <div id="email-error" className={styles.errorMessage} role="alert">{errors.email}</div>
+          <div className="mt-2 flex items-center text-sm text-red-600">
+            <svg className="h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd"/>
+            </svg>
+            {errors.email}
+          </div>
         )}
+        <ValidationError 
+          prefix="Email" 
+          field="email"
+          errors={state.errors}
+          className="mt-2 flex items-center text-sm text-red-600"
+        />
       </div>
 
       <div>
-        <label htmlFor="message" className={styles.field}>
-          Tell Me About Your Vision
+        <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
+          Message
         </label>
         <textarea
           id="message"
           name="message"
+          rows={4}
           value={formData.message}
           onChange={handleChange}
-          rows={4}
-          className={`${styles.formInput} ${errors.message ? styles.error : ''}`}
-          placeholder="e.g., I'm planning a family portrait session next month. We'd love to capture some candid moments in nature..."
-          aria-invalid={!!errors.message}
-          aria-describedby={errors.message ? "message-error" : undefined}
+          className={`mt-1 block w-full px-4 py-2.5 rounded-md border shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm transition-colors duration-200 ${
+            errors.message ? 'border-red-500 bg-red-50' : 'border-gray-300'
+          }`}
+          placeholder="Enter your message"
         />
         {errors.message && (
-          <div id="message-error" className={styles.errorMessage} role="alert">{errors.message}</div>
+          <div className="mt-2 flex items-center text-sm text-red-600">
+            <svg className="h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd"/>
+            </svg>
+            {errors.message}
+          </div>
         )}
+        <ValidationError 
+          prefix="Message" 
+          field="message"
+          errors={state.errors}
+          className="mt-2 flex items-center text-sm text-red-600"
+        />
       </div>
 
-      {status && (
-        <div className={status.type === 'success' ? styles.successMessage : styles.errorContainer} role="alert">
-          <div className="flex items-center">
-            <svg className={styles.icon} fill="currentColor" viewBox="0 0 20 20">
-              {status.type === 'success' ? (
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
-              ) : (
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd"/>
-              )}
-            </svg>
-            {status.message}
-          </div>
-        </div>
-      )}
-
-      <button
-        type="submit"
-        className="btn btn-primary w-full"
-        disabled={isSubmitting}
-        aria-label="Send message"
-      >
-        {isSubmitting ? 'Sending Your Message...' : 'Start Your Photography Journey'}
-      </button>
+      <div>
+        <button
+          type="submit"
+          disabled={state.submitting}
+          className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#9C8B7E] hover:bg-[#8A7B6E] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#9C8B7E] disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+        >
+          {state.submitting ? 'Sending...' : 'Send Message'}
+        </button>
+      </div>
     </form>
   );
-};
-
-export default ContactForm; 
+} 

@@ -2,74 +2,150 @@
 import { getImageConfig } from '../../utils/images';
 
 const galleryItems = [
-    { 
-        title: 'Natural Portraits', 
-        category: 'Portrait', 
-        description: 'Capturing your authentic self',
-        filename: 'portrait-1.jpg'
-    },
-    { 
-        title: 'Wedding Moments', 
-        category: 'Wedding', 
-        description: 'Your special day, perfectly preserved',
-        filename: 'wedding-1.jpg'
-    },
-    { 
-        title: 'Family Love', 
-        category: 'Family', 
-        description: 'The connections that matter most',
-        filename: 'family-1.jpg'
-    },
-    { 
-        title: 'Event Stories', 
-        category: 'Event', 
-        description: 'Your celebrations, beautifully documented',
-        filename: 'event-1.jpg'
-    },
-    { 
-        title: 'Couple Chemistry', 
-        category: 'Couple', 
-        description: 'Your love story, told through photos',
-        filename: 'couple-1.jpg'
-    },
-    { 
-        title: 'Lifestyle Moments', 
-        category: 'Lifestyle', 
-        description: 'Your everyday, made extraordinary',
-        filename: 'lifestyle-1.jpg'
-    }
+  {
+    title: 'Wedding Moments',
+    description: 'Capturing love and joy on your special day',
+    imageId: 'wedding',
+    filename: 'wedding-gallery.jpg'
+  },
+  {
+    title: 'Family Portraits',
+    description: 'Timeless memories with your loved ones',
+    imageId: 'family',
+    filename: 'family-gallery.jpg'
+  },
+  {
+    title: 'Professional Portraits',
+    description: 'Stunning portraits that tell your story',
+    imageId: 'portrait',
+    filename: 'portrait-gallery.jpg'
+  },
+  {
+    title: 'Special Events',
+    description: 'Documenting your most memorable moments',
+    imageId: 'event',
+    filename: 'event-gallery.jpg'
+  }
 ];
 ---
 
-<section id="gallery" class="section">
-    <div class="container">
-        <h2 class="section-title">My Style</h2>
-        <p class="section-subtitle">See how I capture moments that feel like home</p>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {galleryItems.map((photo, index) => {
-                const imageConfig = getImageConfig('gallery', photo.filename, `${photo.title} - ${photo.description}`, 800, 600, true);
-                return (
-                    <div class="card group overflow-hidden" client:load>
-                        <div class="relative aspect-[4/3] overflow-hidden">
-                            <img 
-                                src={imageConfig.src}
-                                alt={imageConfig.alt}
-                                width={imageConfig.width}
-                                height={imageConfig.height}
-                                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                            />
-                            <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                                <a href="#contact" class="btn btn-primary" client:load>Create Your Story</a>
-                            </div>
-                        </div>
-                        <div class="p-4">
-                            <h3 class="text-xl font-semibold mb-2">{photo.title}</h3>
-                            <p class="text-gray-600 mb-2">{photo.description}</p>
-                            <p class="text-sm text-gray-500">Style: {photo.category}</p>
-                        </div>
+<section class="py-16 bg-white">
+  <div class="container">
+    <h2 class="text-3xl font-bold text-center mb-12">Gallery</h2>
+    <div class="relative">
+      <div class="gallery-carousel overflow-hidden">
+        <div class="flex transition-transform duration-500 ease-in-out">
+          {galleryItems.map((item, index) => {
+            const imageConfig = getImageConfig(
+              'gallery',
+              item.filename,
+              item.title,
+              800,
+              600,
+              true,
+              item.imageId
+            );
+            return (
+              <div class="w-full flex-shrink-0 px-4">
+                <div class="relative group">
+                  <img
+                    src={imageConfig.src}
+                    alt={imageConfig.alt}
+                    width={imageConfig.width}
+                    height={imageConfig.height}
+                    class="w-full h-[600px] object-cover rounded-lg shadow-lg"
+                  />
+                  <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-300 rounded-lg flex items-center justify-center">
+                    <div class="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-center p-6">
+                      <h3 class="text-2xl font-bold mb-2">{item.title}</h3>
+                      <p class="text-lg">{item.description}</p>
                     </div>
-                );
-            })}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
+      </div>
+      <button class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-80 hover:bg-opacity-100 p-2 rounded-full shadow-lg transition-all duration-300" id="prevBtn">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
+      <button class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-80 hover:bg-opacity-100 p-2 rounded-full shadow-lg transition-all duration-300" id="nextBtn">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
+      <div class="flex justify-center mt-4 space-x-2">
+        {galleryItems.map((_, index) => (
+          <button
+            class="w-3 h-3 rounded-full bg-gray-300 hover:bg-gray-400 transition-colors duration-300"
+            id={`dot-${index}`}
+            aria-label={`Go to slide ${index + 1}`}
+          ></button>
+        ))}
+      </div>
     </div>
-</section> 
+  </div>
+</section>
+
+<script>
+  let currentSlide = 0;
+  const slides = document.querySelectorAll('.gallery-carousel > div > div');
+  const dots = document.querySelectorAll('[id^="dot-"]');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+
+  function updateSlide() {
+    const carousel = document.querySelector('.gallery-carousel > div');
+    carousel.style.transform = `translateX(-${currentSlide * 100}%)`;
+    
+    // Update dots
+    dots.forEach((dot, index) => {
+      dot.classList.toggle('bg-gray-600', index === currentSlide);
+    });
+  }
+
+  function nextSlide() {
+    currentSlide = (currentSlide + 1) % slides.length;
+    updateSlide();
+  }
+
+  function prevSlide() {
+    currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+    updateSlide();
+  }
+
+  // Event listeners
+  nextBtn.addEventListener('click', nextSlide);
+  prevBtn.addEventListener('click', prevSlide);
+
+  dots.forEach((dot, index) => {
+    dot.addEventListener('click', () => {
+      currentSlide = index;
+      updateSlide();
+    });
+  });
+
+  // Auto-advance slides every 5 seconds
+  setInterval(nextSlide, 5000);
+</script>
+
+<style>
+  .gallery-carousel {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+  }
+  
+  .gallery-carousel > div {
+    display: flex;
+    width: 100%;
+    transition: transform 0.5s ease-in-out;
+  }
+  
+  .gallery-carousel > div > div {
+    flex: 0 0 100%;
+  }
+</style> 
