@@ -1,23 +1,31 @@
+---
+import { getImageConfig } from '../../utils/images';
+
+const profileImage = getImageConfig('about', 'profile.jpg', 'Lena, your photographer', 600, 600, true);
+---
+
 <section id="about" class="section bg-gray-50">
     <div class="container">
-        <h2 class="section-title">About Me</h2>
-        <p class="section-subtitle">My journey in photography</p>
+        <h2 class="section-title">Meet Lena</h2>
+        <p class="section-subtitle">Your personal storyteller behind the lens</p>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
             <div class="relative aspect-square rounded-lg overflow-hidden" client:load>
                 <img 
-                    src="https://picsum.photos/600/600?random=7" 
-                    alt="Photographer profile" 
+                    src={profileImage.src}
+                    alt={profileImage.alt}
+                    width={profileImage.width}
+                    height={profileImage.height}
                     class="w-full h-full object-cover"
                 />
             </div>
             <div>
                 <p class="text-lg text-gray-700 mb-6">
-                    With over 10 years of experience in photography, I've dedicated my life to capturing the beauty of moments that matter. My passion lies in creating timeless memories that tell your unique story.
+                    I'm not just a photographer - I'm your personal storyteller. For over 10 years, I've been helping people like you capture the moments that make life beautiful. My approach is simple: I make you feel comfortable, natural, and yourself in front of the camera.
                 </p>
                 <p class="text-lg text-gray-700 mb-8">
-                    I specialize in portrait, wedding, and event photography, bringing a creative and professional approach to every shoot. My goal is to make you feel comfortable and natural in front of the camera, ensuring authentic and beautiful results.
+                    Whether it's your wedding day, a family portrait, or a special event, I bring my unique eye for detail and passion for storytelling to every shoot. I believe in creating photos that don't just look good - they feel like home.
                 </p>
-                <a href="#contact" class="btn btn-primary" client:load>Get in Touch</a>
+                <a href="#contact" class="btn btn-primary" client:load>Let's Create Something Beautiful</a>
             </div>
         </div>
     </div>

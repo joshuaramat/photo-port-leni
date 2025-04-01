@@ -1,26 +1,75 @@
+---
+import { getImageConfig } from '../../utils/images';
+
+const galleryItems = [
+    { 
+        title: 'Natural Portraits', 
+        category: 'Portrait', 
+        description: 'Capturing your authentic self',
+        filename: 'portrait-1.jpg'
+    },
+    { 
+        title: 'Wedding Moments', 
+        category: 'Wedding', 
+        description: 'Your special day, perfectly preserved',
+        filename: 'wedding-1.jpg'
+    },
+    { 
+        title: 'Family Love', 
+        category: 'Family', 
+        description: 'The connections that matter most',
+        filename: 'family-1.jpg'
+    },
+    { 
+        title: 'Event Stories', 
+        category: 'Event', 
+        description: 'Your celebrations, beautifully documented',
+        filename: 'event-1.jpg'
+    },
+    { 
+        title: 'Couple Chemistry', 
+        category: 'Couple', 
+        description: 'Your love story, told through photos',
+        filename: 'couple-1.jpg'
+    },
+    { 
+        title: 'Lifestyle Moments', 
+        category: 'Lifestyle', 
+        description: 'Your everyday, made extraordinary',
+        filename: 'lifestyle-1.jpg'
+    }
+];
+---
+
 <section id="gallery" class="section">
     <div class="container">
-        <h2 class="section-title">My Portfolio</h2>
-        <p class="section-subtitle">A glimpse into our work</p>
+        <h2 class="section-title">My Style</h2>
+        <p class="section-subtitle">See how I capture moments that feel like home</p>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[1, 2, 3, 4, 5, 6].map((num) => (
-                <div class="card group overflow-hidden" client:load>
-                    <div class="relative aspect-[4/3] overflow-hidden">
-                        <img 
-                            src={`https://picsum.photos/800/600?random=${num}`} 
-                            alt={`Gallery image ${num}`}
-                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                        />
-                        <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                            <a href="#contact" class="btn btn-primary" client:load>Book This Style</a>
+            {galleryItems.map((photo, index) => {
+                const imageConfig = getImageConfig('gallery', photo.filename, `${photo.title} - ${photo.description}`, 800, 600, true);
+                return (
+                    <div class="card group overflow-hidden" client:load>
+                        <div class="relative aspect-[4/3] overflow-hidden">
+                            <img 
+                                src={imageConfig.src}
+                                alt={imageConfig.alt}
+                                width={imageConfig.width}
+                                height={imageConfig.height}
+                                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                            />
+                            <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                <a href="#contact" class="btn btn-primary" client:load>Create Your Story</a>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="text-xl font-semibold mb-2">{photo.title}</h3>
+                            <p class="text-gray-600 mb-2">{photo.description}</p>
+                            <p class="text-sm text-gray-500">Style: {photo.category}</p>
                         </div>
                     </div>
-                    <div class="p-4">
-                        <h3 class="text-xl font-semibold mb-2">Photo Title {num}</h3>
-                        <p class="text-gray-600">Category: {['Portrait', 'Landscape', 'Event', 'Wedding', 'Family', 'Nature'][num - 1]}</p>
-                    </div>
-                </div>
-            ))}
+                );
+            })}
         </div>
     </div>
 </section> 

@@ -1,13 +1,17 @@
 ---
-// Add client directive for interactive elements
+import { getImageConfig } from '../../utils/images';
+
+const heroImage = getImageConfig('hero', 'hero.jpg', 'Hero background', 1920, 1080);
 ---
 
 <section class="h-screen flex items-center justify-center text-center relative" role="region" aria-label="Hero section">
     <div class="absolute inset-0 z-0">
         <img 
             id="heroImage"
-            src="https://picsum.photos/1920/1080" 
-            alt="Hero background" 
+            src={heroImage.src}
+            alt={heroImage.alt}
+            width={heroImage.width}
+            height={heroImage.height}
             class="w-full h-full object-cover"
             aria-hidden="true"
             client:load
@@ -15,24 +19,24 @@
         <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/60"></div>
     </div>
     <div class="container-sm relative z-10 text-center">
-        <h1 id="heroTitle" class="text-4xl md:text-6xl font-bold mb-6 text-white text-shadow-lg">Capturing Your Special Moments</h1>
-        <p id="heroSubtitle" class="section-subtitle text-white text-shadow-md mb-8">Professional photography services for your most precious memories</p>
+        <h1 id="heroTitle" class="text-4xl md:text-6xl font-bold mb-6 text-white text-shadow-lg">Your Story, My Lens</h1>
+        <p id="heroSubtitle" class="section-subtitle text-white text-shadow-md mb-8 max-w-2xl mx-auto">I create photos that feel like home. Let's capture your moments together - it only takes 2 minutes to start.</p>
         <div class="flex gap-4 justify-center">
             <a 
                 href="#contact" 
                 class="btn btn-primary min-h-[44px] min-w-[44px] flex items-center justify-center px-6 py-3" 
                 client:load
-                aria-label="Book a photography session"
+                aria-label="Start your photography journey with me"
             >
-                Book a Session
+                Start Your Journey
             </a>
             <a 
                 href="#gallery" 
                 class="btn btn-secondary min-h-[44px] min-w-[44px] flex items-center justify-center px-6 py-3" 
                 client:load
-                aria-label="View our photography portfolio"
+                aria-label="See my photography portfolio"
             >
-                View Portfolio
+                See My Work
             </a>
         </div>
     </div>

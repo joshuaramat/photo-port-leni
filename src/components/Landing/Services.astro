@@ -1,54 +1,74 @@
 ---
+import { getImageConfig } from '../../utils/images';
+
 const services = [
     {
-        title: "Events",
-        description: "Capture the energy and excitement of your special occasions."
+        title: "Wedding Photography",
+        description: "Your wedding day deserves to be remembered perfectly. I'll capture every moment, from the first look to the last dance.",
+        image: 8,
+        filename: 'wedding.jpg'
     },
     {
-        title: "Couples",
-        description: "Beautiful portraits celebrating your love story."
+        title: "Portrait Sessions",
+        description: "Let's create portraits that show the real you. Natural, comfortable, and uniquely yours.",
+        image: 9,
+        filename: 'portrait.jpg'
     },
     {
-        title: "Fitness",
-        description: "Dynamic photography showcasing your fitness journey."
+        title: "Event Coverage",
+        description: "From intimate gatherings to grand celebrations, I'll document your special moments with style.",
+        image: 10,
+        filename: 'event.jpg'
     },
     {
-        title: "Wedding",
-        description: "Timeless memories of your perfect day."
+        title: "Family Photos",
+        description: "Family photos that capture the love and connection you share. Perfect for your walls and hearts.",
+        image: 11,
+        filename: 'family.jpg'
+    },
+    {
+        title: "Commercial Photography",
+        description: "Professional photos that tell your brand's story and connect with your audience.",
+        image: 12,
+        filename: 'commercial.jpg'
+    },
+    {
+        title: "Custom Packages",
+        description: "Need something special? Let's create a package that's perfect for your unique vision.",
+        image: 13,
+        filename: 'custom.jpg'
     }
 ];
 ---
 
 <section id="services" class="section">
     <div class="container">
-        <h2 class="section-title">Our Services</h2>
-        <p class="section-subtitle">Professional photography solutions for every occasion</p>
+        <h2 class="section-title">What I Offer</h2>
+        <p class="section-subtitle">Photography services that capture your story</p>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-                { title: 'Wedding Photography', image: 8 },
-                { title: 'Portrait Sessions', image: 9 },
-                { title: 'Event Coverage', image: 10 },
-                { title: 'Family Photos', image: 11 },
-                { title: 'Commercial Photography', image: 12 },
-                { title: 'Custom Packages', image: 13 }
-            ].map(service => (
-                <div class="card group overflow-hidden" client:load>
-                    <div class="relative aspect-[4/3] overflow-hidden">
-                        <img 
-                            src={`https://picsum.photos/800/600?random=${service.image}`} 
-                            alt={service.title}
-                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                        />
-                        <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                            <a href="#contact" class="btn btn-primary" client:load>Book Now</a>
+            {services.map(service => {
+                const imageConfig = getImageConfig('services', service.filename, service.title, 800, 600, true);
+                return (
+                    <div class="card group overflow-hidden" client:load>
+                        <div class="relative aspect-[4/3] overflow-hidden">
+                            <img 
+                                src={imageConfig.src}
+                                alt={imageConfig.alt}
+                                width={imageConfig.width}
+                                height={imageConfig.height}
+                                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                            />
+                            <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                <a href="#contact" class="btn btn-primary" client:load>Start Your Session</a>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="text-xl font-semibold mb-2">{service.title}</h3>
+                            <p class="text-gray-600">{service.description}</p>
                         </div>
                     </div>
-                    <div class="p-4">
-                        <h3 class="text-xl font-semibold mb-2">{service.title}</h3>
-                        <p class="text-gray-600">Professional photography services tailored to your needs</p>
-                    </div>
-                </div>
-            ))}
+                );
+            })}
         </div>
     </div>
 </section> 

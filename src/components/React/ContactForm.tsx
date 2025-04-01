@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import type { FormEvent } from 'react';
+import styles from './ContactForm.module.css';
 
 interface FormData {
   name: string;
@@ -84,7 +85,7 @@ const ContactForm: React.FC = () => {
       clearTimeout(timeoutId);
 
       if (response.ok) {
-        setStatus({ type: 'success', message: 'Thank you! Your message has been sent.' });
+        setStatus({ type: 'success', message: 'Perfect! I\'ll be in touch within 24 hours to discuss your vision.' });
         setFormData({ name: '', email: '', message: '' });
       } else {
         throw new Error(`Form submission failed: ${response.status}`);
@@ -94,8 +95,8 @@ const ContactForm: React.FC = () => {
       setStatus({
         type: 'error',
         message: error instanceof Error && error.name === 'AbortError'
-          ? 'The request timed out. Please try again.'
-          : 'An unexpected error occurred. Please try again later.'
+          ? 'Oops! The request timed out. Please try again.'
+          : 'Something went wrong. Please try again or email me directly.'
       });
     } finally {
       setIsSubmitting(false);
@@ -103,10 +104,10 @@ const ContactForm: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className={styles.form}>
       <div>
-        <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-          Name
+        <label htmlFor="name" className={styles.field}>
+          Your Name
         </label>
         <input
           type="text"
@@ -114,23 +115,19 @@ const ContactForm: React.FC = () => {
           name="name"
           value={formData.name}
           onChange={handleChange}
-          className={`w-full px-4 py-3 rounded-md border transition-colors duration-200 ${
-            errors.name 
-              ? 'border-error focus:border-error focus:ring-error/20' 
-              : 'border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20'
-          } placeholder:text-gray-400 placeholder:italic`}
-          placeholder="e.g., John Smith"
+          className={`${styles.formInput} ${errors.name ? styles.error : ''}`}
+          placeholder="e.g., Sarah Johnson"
           aria-invalid={!!errors.name}
           aria-describedby={errors.name ? "name-error" : undefined}
         />
         {errors.name && (
-          <div id="name-error" className="text-error text-sm mt-1" role="alert">{errors.name}</div>
+          <div id="name-error" className={styles.errorMessage} role="alert">{errors.name}</div>
         )}
       </div>
 
       <div>
-        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-          Email
+        <label htmlFor="email" className={styles.field}>
+          Your Email
         </label>
         <input
           type="email"
@@ -138,23 +135,19 @@ const ContactForm: React.FC = () => {
           name="email"
           value={formData.email}
           onChange={handleChange}
-          className={`w-full px-4 py-3 rounded-md border transition-colors duration-200 ${
-            errors.email 
-              ? 'border-error focus:border-error focus:ring-error/20' 
-              : 'border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20'
-          } placeholder:text-gray-400 placeholder:italic`}
-          placeholder="e.g., john.smith@example.com"
+          className={`${styles.formInput} ${errors.email ? styles.error : ''}`}
+          placeholder="e.g., sarah@example.com"
           aria-invalid={!!errors.email}
           aria-describedby={errors.email ? "email-error" : undefined}
         />
         {errors.email && (
-          <div id="email-error" className="text-error text-sm mt-1" role="alert">{errors.email}</div>
+          <div id="email-error" className={styles.errorMessage} role="alert">{errors.email}</div>
         )}
       </div>
 
       <div>
-        <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
-          Message
+        <label htmlFor="message" className={styles.field}>
+          Tell Me About Your Vision
         </label>
         <textarea
           id="message"
@@ -162,28 +155,20 @@ const ContactForm: React.FC = () => {
           value={formData.message}
           onChange={handleChange}
           rows={4}
-          className={`w-full px-4 py-3 rounded-md border transition-colors duration-200 ${
-            errors.message 
-              ? 'border-error focus:border-error focus:ring-error/20' 
-              : 'border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20'
-          } placeholder:text-gray-400 placeholder:italic`}
-          placeholder="e.g., I'm interested in booking a portrait session..."
+          className={`${styles.formInput} ${errors.message ? styles.error : ''}`}
+          placeholder="e.g., I'm planning a family portrait session next month. We'd love to capture some candid moments in nature..."
           aria-invalid={!!errors.message}
           aria-describedby={errors.message ? "message-error" : undefined}
         />
         {errors.message && (
-          <div id="message-error" className="text-error text-sm mt-1" role="alert">{errors.message}</div>
+          <div id="message-error" className={styles.errorMessage} role="alert">{errors.message}</div>
         )}
       </div>
 
       {status && (
-        <div className={`rounded-md p-4 mt-4 ${
-          status.type === 'success' 
-            ? 'bg-green-50 border border-green-200 text-green-800' 
-            : 'bg-red-50 border border-red-200 text-red-800'
-        }`} role="alert">
+        <div className={status.type === 'success' ? styles.successMessage : styles.errorContainer} role="alert">
           <div className="flex items-center">
-            <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+            <svg className={styles.icon} fill="currentColor" viewBox="0 0 20 20">
               {status.type === 'success' ? (
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
               ) : (
@@ -201,7 +186,7 @@ const ContactForm: React.FC = () => {
         disabled={isSubmitting}
         aria-label="Send message"
       >
-        {isSubmitting ? 'Sending...' : 'Send Message'}
+        {isSubmitting ? 'Sending Your Message...' : 'Start Your Photography Journey'}
       </button>
     </form>
   );
