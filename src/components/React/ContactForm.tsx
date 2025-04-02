@@ -28,28 +28,106 @@ export default function ContactForm() {
       ...prev,
       [name]: value
     }));
-    // Clear error when user starts typing
-    if (errors[name as keyof FormErrors]) {
-      setErrors(prev => ({
-        ...prev,
-        [name]: ''
-      }));
+
+    // Validate the field in real-time
+    const newErrors: FormErrors = { ...errors };
+    
+    if (name === 'name') {
+      const nameRegex = /^[a-zA-Z\s'-]+$/;
+      const name = value.trim();
+      const nameErrors: string[] = [];
+      
+      if (!name) {
+        nameErrors.push('Name is required');
+      } else {
+        if (name.length < 2) {
+          nameErrors.push('Name must be at least 2 characters');
+        }
+        if (name.length > 50) {
+          nameErrors.push('Name must be less than 50 characters');
+        }
+        if (!nameRegex.test(name)) {
+          nameErrors.push('Name can only contain letters, spaces, hyphens, and apostrophes');
+        }
+        if (name.includes("''")) {
+          nameErrors.push('Name cannot contain consecutive apostrophes');
+        }
+        if (name.includes('--')) {
+          nameErrors.push('Name cannot contain consecutive hyphens');
+        }
+      }
+      
+      newErrors.name = nameErrors.length > 0 ? nameErrors.join(' and ') : undefined;
+    } else if (name === 'message') {
+      if (!value.trim()) {
+        newErrors.message = 'Message is required';
+      } else {
+        newErrors.message = undefined;
+      }
     }
+
+    setErrors(newErrors);
+  };
+
+  const handleEmailBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    const email = e.target.value.trim();
+    const newErrors: FormErrors = { ...errors };
+    const emailErrors: string[] = [];
+
+    if (!email) {
+      emailErrors.push('Email is required');
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      emailErrors.push('Please enter a valid email address');
+    }
+
+    newErrors.email = emailErrors.length > 0 ? emailErrors.join(' and ') : undefined;
+    setErrors(newErrors);
   };
 
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
     
-    if (!formData.name.trim()) {
-      newErrors.name = 'Name is required';
+    // Name validation
+    const nameRegex = /^[a-zA-Z\s'-]+$/;
+    const name = formData.name.trim();
+    const nameErrors: string[] = [];
+    
+    if (!name) {
+      nameErrors.push('Name is required');
+    } else {
+      if (name.length < 2) {
+        nameErrors.push('Name must be at least 2 characters');
+      }
+      if (name.length > 50) {
+        nameErrors.push('Name must be less than 50 characters');
+      }
+      if (!nameRegex.test(name)) {
+        nameErrors.push('Name can only contain letters, spaces, hyphens, and apostrophes');
+      }
+      if (name.includes("''")) {
+        nameErrors.push('Name cannot contain consecutive apostrophes');
+      }
+      if (name.includes('--')) {
+        nameErrors.push('Name cannot contain consecutive hyphens');
+      }
     }
     
+    if (nameErrors.length > 0) {
+      newErrors.name = nameErrors.join(' and ');
+    }
+    
+    // Email validation
+    const emailErrors: string[] = [];
     if (!formData.email.trim()) {
-      newErrors.email = 'Email is required';
+      emailErrors.push('Email is required');
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email address';
+      emailErrors.push('Please enter a valid email address');
+    }
+    if (emailErrors.length > 0) {
+      newErrors.email = emailErrors.join(' and ');
     }
     
+    // Message validation
     if (!formData.message.trim()) {
       newErrors.message = 'Message is required';
     }
@@ -60,6 +138,13 @@ export default function ContactForm() {
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    
+    // Clean up spaces in name field before validation
+    const cleanedFormData = {
+      ...formData,
+      name: formData.name.replace(/\s+/g, ' ').trim()
+    };
+    setFormData(cleanedFormData);
     
     if (!validateForm()) {
       return;
@@ -124,6 +209,7 @@ export default function ContactForm() {
           name="email"
           value={formData.email}
           onChange={handleChange}
+          onBlur={handleEmailBlur}
           className={`mt-1 block w-full px-4 py-2.5 rounded-md border shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm transition-colors duration-200 ${
             errors.email ? 'border-red-500 bg-red-50' : 'border-gray-300'
           }`}

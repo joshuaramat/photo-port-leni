@@ -1,8 +1,6 @@
----
-import { GalleryCarousel } from '@/features/gallery/components/GalleryCarousel';
-import type { GalleryItem } from '@/features/gallery/types';
+import type { GalleryItem } from './types';
 
-const galleryItems: GalleryItem[] = [
+export const galleryItems: GalleryItem[] = [
   {
     title: 'Wedding Moments',
     description: 'Capturing love and joy on your special day',
@@ -57,35 +55,4 @@ const galleryItems: GalleryItem[] = [
     imageId: 'art',
     filename: 'art-gallery.jpg'
   }
-];
-
-<div>
-  <section class="py-24 bg-white">
-    <div class="container">
-      <h2 class="text-4xl font-bold text-center mb-4 font-['Cormorant_Garamond']">Gallery</h2>
-      <p class="text-gray-600 text-center mb-16 max-w-2xl mx-auto">
-        Explore my collection of moments captured through the lens. Each image tells a unique story, waiting to be shared.
-      </p>
-      <GalleryCarousel client:load items={galleryItems} />
-    </div>
-  </section>
-
-  {/* @ts-ignore */}
-  <style>
-    .gallery-carousel {
-      position: relative;
-      width: 100%;
-      overflow: hidden;
-    }
-    
-    .gallery-carousel > div {
-      display: flex;
-      width: 100%;
-      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    
-    .gallery-carousel > div > div {
-      flex: 0 0 100%;
-    }
-  </style>
-</div> 
+]; 
