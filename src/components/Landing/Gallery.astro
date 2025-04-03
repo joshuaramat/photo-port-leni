@@ -58,6 +58,7 @@ const galleryItems: GalleryItem[] = [
     filename: 'art-gallery.jpg'
   }
 ];
+---
 
 <div>
   <section class="py-24 bg-white">
@@ -69,23 +70,4 @@ const galleryItems: GalleryItem[] = [
       <GalleryCarousel client:load items={galleryItems} />
     </div>
   </section>
-
-  {/* @ts-ignore */}
-  <style>
-    .gallery-carousel {
-      position: relative;
-      width: 100%;
-      overflow: hidden;
-    }
-    
-    .gallery-carousel > div {
-      display: flex;
-      width: 100%;
-      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    
-    .gallery-carousel > div > div {
-      flex: 0 0 100%;
-    }
-  </style>
 </div> 

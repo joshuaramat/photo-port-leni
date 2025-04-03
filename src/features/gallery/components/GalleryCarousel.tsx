@@ -23,7 +23,7 @@ export function GalleryCarousel({
     setState(prev => ({
       ...prev,
       isTransitioning: true,
-      currentSlide: (prev.currentSlide + 1) % items.length
+      currentSlide: (prev.currentSlide + 1) % (items.length + 1)
     }));
   };
 
@@ -65,7 +65,13 @@ export function GalleryCarousel({
   useEffect(() => {
     if (state.isTransitioning) {
       transitionRef.current = window.setTimeout(() => {
-        setState(prev => ({ ...prev, isTransitioning: false }));
+        setState(prev => {
+          // If we're at the cloned slide, instantly jump back to the first slide
+          if (prev.currentSlide === items.length) {
+            return { ...prev, currentSlide: 0, isTransitioning: false };
+          }
+          return { ...prev, isTransitioning: false };
+        });
       }, 500);
     }
     return () => {
@@ -73,7 +79,7 @@ export function GalleryCarousel({
         window.clearTimeout(transitionRef.current);
       }
     };
-  }, [state.isTransitioning]);
+  }, [state.isTransitioning, items.length]);
 
   return (
     <div 
@@ -88,15 +94,25 @@ export function GalleryCarousel({
       }}
     >
       <div className="gallery-carousel overflow-hidden rounded-2xl">
-        <div className="flex transition-transform duration-500 ease-in-out">
+        <div 
+          className="flex transition-transform duration-500 ease-in-out"
+          style={{ transform: `translateX(-${state.currentSlide * 100}%)` }}
+        >
           {items.map((item, index) => (
             <GallerySlide
               key={item.imageId}
               item={item}
-              isActive={index === state.currentSlide}
+              isActive={true}
               priority={index === 0}
             />
           ))}
+          {/* Clone first slide for smooth loop */}
+          <GallerySlide
+            key="first-clone"
+            item={items[0]}
+            isActive={true}
+            priority={false}
+          />
         </div>
       </div>
       {showNavigation && (

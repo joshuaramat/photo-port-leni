@@ -17,9 +17,7 @@ export function GallerySlide({ item, isActive, priority = false }: GallerySlideP
 
   return (
     <div 
-      className={`w-full flex-shrink-0 px-4 sm:px-8 transition-opacity duration-300 ${
-        isActive ? 'opacity-100' : 'opacity-0'
-      }`}
+      className="w-full flex-shrink-0 px-4 sm:px-8"
       role="group"
       aria-roledescription="slide"
       aria-label={`${item.title} - ${item.description}`}

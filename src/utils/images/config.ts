@@ -1,7 +1,7 @@
 import type { ImageConfig, ResponsiveImageOptions } from './types';
 import { DEFAULT_IMAGE_CONFIG, DEFAULT_IMAGE_SIZES, RESPONSIVE_SIZES } from './constants';
 
-const PLACEHOLDER_BASE_URL = 'https://placehold.co';
+const PLACEHOLDER_BASE_URL = 'https://picsum.photos/seed';
 
 export function getResponsiveImageConfig(
   category: string,
@@ -16,7 +16,7 @@ export function getResponsiveImageConfig(
     category: imageCategory = category
   } = options;
 
-  const placeholderUrl = `${PLACEHOLDER_BASE_URL}/${width}x${height}/f5f5f5/666666?text=${imageCategory}`;
+  const placeholderUrl = `${PLACEHOLDER_BASE_URL}/${imageCategory}/${width}/${height}`;
   
   return {
     src: placeholderUrl,
@@ -35,7 +35,7 @@ export function getResponsiveSrcSet(width: number, height: number, category: str
   return Object.entries(RESPONSIVE_SIZES)
     .map(([size, query]) => {
       const sizeWidth = DEFAULT_IMAGE_SIZES[size as keyof typeof DEFAULT_IMAGE_SIZES];
-      return `${PLACEHOLDER_BASE_URL}/${sizeWidth}x${height}/f5f5f5/666666?text=${category} ${query} ${sizeWidth}w`;
+      return `${PLACEHOLDER_BASE_URL}/${category}/${sizeWidth}/${height} ${query} ${sizeWidth}w`;
     })
     .join(', ');
 } 
