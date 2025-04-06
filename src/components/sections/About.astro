@@ -1,0 +1,32 @@
+---
+import LandingSection from '../layouts/LandingSection.astro';
+import { getImageConfig } from '../../assets/images/config';
+
+const profileImage = getImageConfig(
+  'about',
+  'profile.jpg',
+  'Lena, your photographer',
+  600,
+  600,
+  true,
+  'about'
+);
+---
+
+<LandingSection 
+  title="About Me" 
+  subtitle="Capturing Your Story Through My Lens"
+  id="about"
+>
+  <div class="about-content">
+    <p class="text-gray-600 mb-6">
+      I'm Lena, and photography isn't just my job - it's my passion. I fell in love with capturing moments when I first picked up a camera, and I've been telling stories through my lens ever since. Every photograph I take is more than just an image; it's a piece of someone's story that I'm honored to preserve.
+    </p>
+    <p class="text-gray-600 mb-6">
+      I believe that the most beautiful photographs come from genuine moments and authentic connections. That's why I focus on capturing the real you - your laughter, your tears, your quiet moments, and your biggest celebrations. I want to create images that make you feel something every time you look at them, even years down the road.
+    </p>
+    <p class="text-gray-600">
+      Whether you're planning your dream wedding, celebrating a milestone, or simply want to capture this moment in your life, I'd love to be your photographer. Let's create something beautiful together - something that tells your unique story in a way that feels true to who you are.
+    </p>
+  </div>
+</LandingSection> 

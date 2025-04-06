@@ -1,0 +1,125 @@
+---
+interface Props {
+    title?: string;
+}
+
+const { title = "Lena Photography" } = Astro.props;
+
+const navItems = [
+    { href: "#about", label: "About" },
+    { href: "#services", label: "Services" },
+    { href: "#gallery", label: "Gallery" },
+    { href: "#contact", label: "Contact" }
+];
+---
+
+<header class="header">
+    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+        <a href="/" class="group flex items-center space-x-2">
+            <span class="text-2xl font-serif font-light tracking-wide text-[var(--color-text)] group-hover:text-[var(--color-primary)] transition-colors duration-300">
+                Lena
+            </span>
+            <span class="text-2xl font-serif font-light tracking-widest text-[var(--color-text-light)] group-hover:text-[var(--color-primary-light)] transition-colors duration-300">
+                Photography
+            </span>
+        </a>
+        
+        <!-- Mobile menu button -->
+        <button
+            id="mobile-menu-button"
+            class="md:hidden p-2 rounded-lg hover:bg-[var(--color-background-alt)] transition-colors"
+            aria-label="Toggle mobile menu"
+            aria-expanded="false"
+            aria-controls="mobile-menu"
+        >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[var(--color-text)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+        </button>
+
+        <!-- Desktop navigation -->
+        <nav class="hidden md:block">
+            <ul class="flex space-x-8">
+                {navItems.map((item) => (
+                    <li>
+                        <a 
+                            href={item.href} 
+                            class="nav-link text-[var(--color-text-light)] hover:text-[var(--color-primary)] transition-colors duration-300 font-medium tracking-wide"
+                        >
+                            {item.label}
+                        </a>
+                    </li>
+                ))}
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Mobile menu -->
+    <div 
+        id="mobile-menu" 
+        class="hidden md:hidden bg-[var(--color-background)] border-t border-[var(--color-background-alt)] transition-all duration-300 ease-in-out"
+        role="navigation"
+        aria-label="Mobile menu"
+    >
+        <div class="container mx-auto px-4 py-4 space-y-4">
+            {navItems.map((item) => (
+                <a 
+                    href={item.href} 
+                    class="block nav-link text-[var(--color-text-light)] hover:text-[var(--color-primary)] transition-colors duration-300 font-medium tracking-wide"
+                >
+                    {item.label}
+                </a>
+            ))}
+        </div>
+    </div>
+</header>
+
+<style>
+    /* Scoped by default! */
+    :root {
+        --header-height: 4.5rem;
+    }
+    
+    .header {
+        @apply fixed w-full z-50 bg-[var(--color-background)] shadow-sm;
+        height: var(--header-height);
+    }
+
+    /* Mobile-first responsive design */
+    @media (max-width: 768px) {
+        :root {
+            --header-height: 3.5rem;
+        }
+    }
+
+    .nav-link {
+        position: relative;
+        padding: 0.5rem 0;
+    }
+
+    .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: var(--color-primary);
+        transition: width 0.3s ease-in-out;
+    }
+
+    .nav-link:hover::after {
+        width: 100%;
+    }
+</style>
+
+<script>
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    mobileMenuButton?.addEventListener('click', () => {
+        const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+        mobileMenuButton.setAttribute('aria-expanded', String(!isExpanded));
+        mobileMenu?.classList.toggle('hidden');
+    });
+</script> 

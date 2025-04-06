@@ -1,0 +1,150 @@
+---
+import { getPlaceholderImage } from '../common/images/placeholders';
+import LandingSection from '../layouts/LandingSection.astro';
+
+const services = [
+    {
+        title: "Wedding Photography",
+        description: "I'll capture every precious moment of your special day, from the nervous excitement of getting ready to the joy of your first dance. Let me tell your love story through beautiful, timeless photographs.",
+        imageId: 'wedding',
+        seed: 'wedding'
+    },
+    {
+        title: "Portrait Sessions",
+        description: "Whether it's a family gathering, professional headshots, or a personal branding session, I'll help you feel comfortable in front of the camera and capture your authentic self.",
+        imageId: 'portrait',
+        seed: 'portrait'
+    },
+    {
+        title: "Event Photography",
+        description: "From corporate events to milestone celebrations, I'll be there to document every important moment. I blend into the background to capture genuine interactions while ensuring no special moment is missed.",
+        imageId: 'event',
+        seed: 'event'
+    }
+];
+
+const serviceImages = services.map(service => 
+    getPlaceholderImage({
+        width: 800,
+        height: 600,
+        seed: service.seed,
+        blur: 1
+    })
+);
+---
+
+<LandingSection 
+  title="Services" 
+  subtitle="Tailored Photography Experiences"
+  id="services"
+>
+  <div class="services-container">
+    <div class="services-grid">
+      {services.map((service, index) => {
+        const imageUrl = serviceImages[index];
+        return (
+          <div class="service-card">
+            <div 
+              class="service-image-container"
+              style={`background-image: url(${imageUrl})`}
+            >
+              <div class="service-overlay"></div>
+              <div class="service-content">
+                <h3 class="service-title">{service.title}</h3>
+                <p class="service-description">{service.description}</p>
+                <div class="service-actions">
+                  <a href="#contact" class="service-button group">
+                    <span class="button-text">Book Your Session</span>
+                    <span class="button-icon">→</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+</LandingSection>
+
+<style>
+  .services-container {
+    @apply w-full;
+  }
+
+  .services-grid {
+    @apply grid gap-8 px-4 sm:px-6 lg:px-8 mx-auto;
+    max-width: 1400px;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .service-card {
+    @apply rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 w-full;
+    aspect-ratio: 4/5;
+  }
+
+  @media (max-width: 1024px) {
+    .services-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .services-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .service-image-container {
+    @apply relative h-full bg-cover bg-center transition-transform duration-500 overflow-hidden;
+  }
+
+  .service-overlay {
+    @apply absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent transition-opacity duration-300;
+  }
+
+  .service-content {
+    @apply absolute bottom-0 left-0 right-0 p-4 sm:p-6 text-white transform transition-transform duration-300;
+  }
+
+  .service-title {
+    @apply text-xl sm:text-2xl font-bold mb-2 text-white;
+  }
+
+  .service-description {
+    @apply text-sm sm:text-base text-white/70 mb-4;
+  }
+
+  .service-actions {
+    @apply mt-4;
+  }
+
+  .service-button {
+    @apply inline-flex items-center gap-2 bg-white text-primary px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-semibold 
+           hover:bg-primary hover:text-white transition-all duration-300 shadow-md hover:shadow-lg text-xs sm:text-sm;
+  }
+
+  .button-text {
+    @apply relative z-10 font-bold;
+  }
+
+  .button-icon {
+    @apply relative z-10 transition-transform duration-300;
+  }
+
+  .group:hover .button-icon {
+    @apply translate-x-1;
+  }
+
+  .service-card:hover .service-image-container {
+    @apply scale-[1.02];
+  }
+
+  .service-card:hover .service-content {
+    @apply translate-y-[-2px];
+  }
+
+  .service-card:hover .service-overlay {
+    @apply opacity-90;
+  }
+</style> 

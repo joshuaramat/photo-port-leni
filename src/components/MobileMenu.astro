@@ -1,0 +1,17 @@
+---
+interface Props {
+    navItems: Array<{ href: string; label: string; }>;
+}
+
+const { navItems } = Astro.props;
+---
+
+<div class="mobile-menu">
+    {navItems.map(item => (
+        <a href={item.href} class="nav-link">{item.label}</a>
+    ))}
+</div>
+
+<script is:inline>
+    // Mobile menu logic here
+</script> 

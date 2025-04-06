@@ -1,0 +1,45 @@
+---
+import LandingSection from '../layouts/LandingSection.astro';
+import GalleryComponent from '../React/Gallery';
+
+interface GalleryImage {
+  id: number;
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+}
+
+// Configuration
+const NUM_IMAGES = 9; // Number of images to display
+const IMAGE_WIDTH = 800;
+const IMAGE_HEIGHT = 600;
+
+// Generate random images from Picsum
+const images: GalleryImage[] = Array.from({ length: NUM_IMAGES }, (_, index) => {
+  const randomId = Math.floor(Math.random() * 1084) + 1; // Picsum has images from 1 to 1084
+  return {
+    id: index + 1,
+    src: `https://picsum.photos/id/${randomId}/${IMAGE_WIDTH}/${IMAGE_HEIGHT}`,
+    alt: `Photography Image ${index + 1}`,
+    width: IMAGE_WIDTH,
+    height: IMAGE_HEIGHT
+  };
+});
+---
+
+<LandingSection 
+  title="Gallery" 
+  subtitle="A Visual Journey Through My Work"
+  id="gallery"
+>
+  <div class="gallery-content">
+    <GalleryComponent client:idle images={images} />
+  </div>
+</LandingSection>
+
+<style>
+  .gallery-content {
+    @apply max-w-7xl mx-auto;
+  }
+</style> 

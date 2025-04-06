@@ -1,0 +1,46 @@
+---
+interface Props {
+  title: string;
+  subtitle?: string;
+  className?: string;
+  id?: string;
+}
+
+const { title, subtitle, className = '', id } = Astro.props;
+---
+
+<section id={id} class={`section-container ${className}`} style="padding-top: var(--header-height);">
+  <div class="section-header">
+    <h2 class="section-title">{title}</h2>
+    {subtitle && <p class="section-subtitle">{subtitle}</p>}
+  </div>
+  <div class="section-content">
+    <slot />
+  </div>
+</section>
+
+<style>
+  .section-container {
+    @apply py-12 px-4;
+  }
+
+  .section-header {
+    @apply text-center mb-8;
+  }
+
+  .section-title {
+    @apply text-2xl md:text-3xl font-bold text-gray-900 mb-2;
+  }
+
+  .section-subtitle {
+    @apply text-lg text-gray-600;
+  }
+
+  .section-content {
+    @apply mx-auto;
+  }
+
+  .section-content:not(.full-width) {
+    @apply max-w-4xl;
+  }
+</style> 

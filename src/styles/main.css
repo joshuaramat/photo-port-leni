@@ -8,7 +8,8 @@
   }
 
   body {
-    @apply m-0 p-0 w-full h-full text-gray-900 bg-white;
+    @apply m-0 p-0 w-full h-full text-gray-900;
+    background-color: var(--color-background);
     font-family: 'Nunito', sans-serif;
   }
 
@@ -32,8 +33,8 @@
     --color-success: #22c55e;
     --color-text: #1f2937;
     --color-text-light: #6b7280;
-    --color-background: #ffffff;
-    --color-background-alt: #f3f4f6;
+    --color-background: #F2EEE8;
+    --color-background-alt: #E5DED5;
   }
 
   /* Focus styles */
@@ -124,7 +125,7 @@
   }
 
   .form-input:invalid {
-    @apply border-error focus:border-error focus:ring-error/20;
+    @apply border-red-500 focus:border-red-500 focus:ring-red-500/20;
   }
 
   .error-message {
@@ -184,9 +185,106 @@
   .gallery-carousel > div > div {
     @apply flex-none w-full;
   }
+
+  .gallery-nav {
+    @apply absolute inset-y-0 left-0 right-0 flex items-center justify-between px-4 pointer-events-none;
+  }
+
+  .gallery-nav-button {
+    @apply bg-white/10 backdrop-blur-sm hover:bg-white/20 p-3 rounded-full shadow-lg transition-all duration-300 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-white/20 flex items-center justify-center pointer-events-auto;
+  }
+
+  .gallery-nav-button.group:hover .gallery-nav-icon {
+    @apply scale-110;
+  }
+
+  .gallery-nav-icon {
+    @apply w-6 h-6 text-white transition-transform duration-300;
+  }
+
+  /* Service Cards */
+  .services-grid {
+    @apply grid grid-cols-3 gap-12 w-full px-2 sm:px-4 lg:px-6 justify-items-center;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .service-card {
+    @apply rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 w-full;
+    aspect-ratio: 4/5;
+  }
+
+  @media (max-width: 1024px) {
+    .services-grid {
+      @apply grid-cols-2 gap-8;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
+    .services-grid {
+      @apply grid-cols-1 gap-6 px-0;
+      grid-template-columns: 1fr;
+    }
+    
+    .service-card {
+      @apply rounded-none;
+    }
+  }
+
+  .service-image-container {
+    @apply relative h-full bg-cover bg-center transition-transform duration-500 overflow-hidden;
+  }
+
+  .service-overlay {
+    @apply absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent transition-opacity duration-300;
+  }
+
+  .service-content {
+    @apply absolute bottom-0 left-0 right-0 p-4 sm:p-6 text-white transform transition-transform duration-300;
+  }
+
+  .service-title {
+    @apply text-xl sm:text-2xl font-bold mb-2 text-white;
+  }
+
+  .service-description {
+    @apply text-sm sm:text-base text-white/70 mb-4;
+  }
+
+  .service-actions {
+    @apply mt-4;
+  }
+
+  .service-button {
+    @apply inline-flex items-center gap-2 bg-white text-primary px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-semibold 
+           hover:bg-primary hover:text-white transition-all duration-300 shadow-md hover:shadow-lg text-xs sm:text-sm;
+  }
+
+  .button-text {
+    @apply relative z-10 font-bold;
+  }
+
+  .button-icon {
+    @apply relative z-10 transition-transform duration-300;
+  }
+
+  .group:hover .button-icon {
+    @apply translate-x-1;
+  }
+
+  .service-card:hover .service-image-container {
+    @apply scale-[1.02];
+  }
+
+  .service-card:hover .service-content {
+    @apply translate-y-[-2px];
+  }
+
+  .service-card:hover .service-overlay {
+    @apply opacity-90;
+  }
 }
 
-/* Utility classes */
 @layer utilities {
   .text-shadow-lg {
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8),
@@ -196,5 +294,9 @@
   .text-shadow-md {
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8),
                   0 2px 4px rgba(0, 0, 0, 0.6);
+  }
+
+  .text-shadow-sm {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
   }
 }

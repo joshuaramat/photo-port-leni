@@ -1,0 +1,169 @@
+.gallery {
+  @apply w-full;
+}
+
+.viewToggle {
+  @apply flex justify-center gap-4 mb-8;
+}
+
+.toggleButton {
+  @apply px-4 py-2 rounded-md bg-gray-100 hover:bg-gray-200 transition-colors duration-200;
+}
+
+.toggleButton.active {
+  @apply bg-primary text-white hover:bg-primary-dark;
+}
+
+/* Grid View Styles */
+.gridContainer {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .gridContainer {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .gridContainer {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.imageContainer {
+  @apply relative aspect-square overflow-hidden rounded-lg cursor-pointer transition-transform duration-300 hover:scale-[1.02];
+}
+
+.image {
+  @apply w-full h-full object-cover transition-transform duration-300;
+}
+
+.imageContainer:hover .image {
+  @apply scale-110;
+}
+
+/* Carousel View Styles */
+.carousel {
+  @apply relative overflow-hidden rounded-lg;
+}
+
+.carouselTrack {
+  @apply flex transition-transform duration-300 ease-[cubic-bezier(0.2,0,0,1)];
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .carouselTrack {
+    @apply transition-none;
+  }
+}
+
+.carouselSlide {
+  @apply flex-none w-full;
+  will-change: transform;
+}
+
+.carouselImage {
+  @apply w-full h-[60vh] object-cover cursor-pointer;
+}
+
+.carouselNav {
+  @apply absolute inset-y-0 left-0 right-0 flex items-center justify-between px-2 pointer-events-none;
+}
+
+.carouselButton {
+  @apply bg-white/50 hover:bg-white/80 text-gray-800 p-2 rounded-full shadow-sm transition-colors duration-200 hover:shadow-md focus:outline-none focus:ring-1 focus:ring-primary/30 pointer-events-auto backdrop-blur-sm;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .carouselButton {
+    @apply transition-none;
+  }
+}
+
+.carouselDots {
+  @apply absolute bottom-2 left-0 right-0 flex justify-center gap-1.5;
+}
+
+.carouselDot {
+  @apply w-1 h-1 rounded-full bg-white/30 hover:bg-white/50 transition-colors duration-200 cursor-pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .carouselDot {
+    @apply transition-none;
+  }
+}
+
+.carouselDot.active {
+  @apply bg-white/80 w-3;
+}
+
+/* Lightbox Styles */
+.lightbox {
+  @apply fixed inset-0 bg-black/90 z-50 flex items-center justify-center;
+}
+
+.lightboxContent {
+  @apply relative max-w-[90vw] max-h-[90vh];
+}
+
+.lightboxImage {
+  @apply max-w-full max-h-[90vh] object-contain;
+}
+
+.closeButton {
+  @apply absolute top-4 right-4 text-white text-4xl font-light cursor-pointer hover:text-gray-300 transition-colors duration-200;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .closeButton {
+    @apply transition-none;
+  }
+}
+
+.navButton {
+  @apply absolute top-1/2 -translate-y-1/2 text-white text-4xl font-light cursor-pointer hover:text-gray-300 transition-colors duration-200;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .navButton {
+    @apply transition-none;
+  }
+}
+
+.prevButton {
+  @apply left-4;
+}
+
+.nextButton {
+  @apply right-4;
+}
+
+/* Animation Classes */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { transform: translateY(10px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.fadeIn {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.slideIn {
+  animation: slideIn 0.5s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fadeIn, .slideIn {
+    animation: none;
+  }
+} 

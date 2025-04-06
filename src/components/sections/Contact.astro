@@ -1,0 +1,23 @@
+---
+import LandingSection from '../layouts/LandingSection.astro';
+import ContactForm from '../React/ContactForm';
+---
+
+<LandingSection 
+  title="Contact" 
+  subtitle="Let's Create Something Beautiful Together"
+  id="contact"
+>
+  <div class="contact-content">
+    <p class="text-gray-600 mb-8 text-center">
+      Ready to capture your special moments? Fill out the form below and I'll get back to you within 24 hours. Let's chat about your vision and how we can create something truly special together.
+    </p>
+    <ContactForm client:visible />
+  </div>
+</LandingSection>
+
+<style>
+  .contact-content {
+    @apply max-w-4xl mx-auto;
+  }
+</style> 
